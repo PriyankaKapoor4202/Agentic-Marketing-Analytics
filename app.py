@@ -216,7 +216,7 @@ Format your response clearly with key metrics highlighted. End with one specific
             {"role": "system", "content": context},
             {"role": "user", "content": question}
         ],
-        max_tokens=500,
+        max_tokens=300,
         temperature=0.3
     )
     
