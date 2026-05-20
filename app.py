@@ -157,7 +157,7 @@ def load_data():
 
 campaigns_df, customers_df = load_data()
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=st.secrets["GROQ_API_KEY"] if "GROQ_API_KEY" in st.secrets else os.getenv("GROQ_API_KEY"))
 
 def analyze_with_agent(question, campaigns_df, customers_df):
     campaign_summary = campaigns_df.groupby('channel').agg({
