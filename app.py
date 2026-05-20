@@ -185,7 +185,7 @@ CHURN RISK BY SEGMENT:
 Answer the question with specific numbers. Be concise. End with one recommendation."""
 
     response = client.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama3-70b-8192",
         messages=[
             {"role": "system", "content": context},
             {"role": "user", "content": question}
