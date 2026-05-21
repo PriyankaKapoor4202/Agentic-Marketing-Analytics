@@ -529,7 +529,10 @@ with tab1:
             <div class="card-head-sub">Average spend vs churn risk</div></div>
         </div></div>""", unsafe_allow_html=True)
         seg = cust_df.groupby('segment').agg(count=('customer_id','count'), avg_spend=('total_spend','mean'), churn=('churn_risk','mean')).reset_index()
-        palette = {'Student':'#6366f1','Standard':'#ef4444','Business':'#f59e0b','Premium':'#f97316','Enterprise':'#22c55e'}
+        # Color by churn risk rank: green=safest, red=riskiest
+        seg_sorted = seg.sort_values('churn')
+        risk_colors = ['#16a34a','#65a30d','#ca8a04','#ea580c','#dc2626']
+        palette = {row['segment']: risk_colors[i] for i, (_, row) in enumerate(seg_sorted.iterrows())}
         fig3 = go.Figure()
         mid_spend = seg['avg_spend'].mean()
         mid_churn = seg['churn'].mean()
