@@ -558,7 +558,7 @@ with tab1:
             fig3.add_trace(go.Scatter(
                 x=[row['avg_spend']], y=[row['churn']],
                 mode='markers+text',
-                marker=dict(size=row['count']/120, color=col,
+                marker=dict(size=28, color=col,
                             line=dict(width=2.5, color='white'), opacity=0.92),
                 text=[f"<b>{row['segment']}</b>"],
                 textposition='top center',
