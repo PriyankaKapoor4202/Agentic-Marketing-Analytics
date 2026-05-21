@@ -441,12 +441,12 @@ with tab1:
         </div></div>""", unsafe_allow_html=True)
         ch = txn_df.groupby('channel')['transaction_amount'].sum().reset_index().sort_values('transaction_amount', ascending=True)
         ch['pct'] = (ch['transaction_amount'] / ch['transaction_amount'].sum() * 100).round(1)
-        colors = ['#4f46e5','#6366f1','#818cf8','#a5b4fc','#c7d2fe']
+        colors = ['#dbeafe','#93c5fd','#60a5fa','#2563eb','#1e3a8a']
         fig1 = go.Figure()
-        for i, row in ch.iterrows():
+        for idx, (_, row) in enumerate(ch.iterrows()):
             fig1.add_trace(go.Bar(
                 x=[row['channel']], y=[row['transaction_amount']],
-                marker_color=colors[i % len(colors)],
+                marker_color=colors[idx % len(colors)],
                 marker_line_width=0,
                 name=row['channel'],
                 text=f"${row['transaction_amount']/1e6:.2f}M ({row['pct']}%)",
@@ -462,6 +462,7 @@ with tab1:
             xaxis=dict(
                 showgrid=False, zeroline=False,
                 tickfont=dict(color='#334155', size=11, family='Inter'),
+                tickangle=0,
                 title=None,
                 showline=True, linecolor='#e2e8f0'
             ),
