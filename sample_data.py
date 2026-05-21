@@ -11,7 +11,6 @@ def generate_fintech_data():
                  'Uber', 'DoorDash', 'Apple Store', 'Google Play', 'Airbnb',
                  'Delta Airlines', 'Marriott Hotels', 'Best Buy', 'Home Depot',
                  'Starbucks', 'McDonald\'s', 'CVS Pharmacy', 'Walgreens']
-    
     channels = ['Credit Card', 'Debit Card', 'Digital Wallet', 'Buy Now Pay Later', 'ACH Transfer']
     regions = ['Northeast', 'Southeast', 'Midwest', 'Southwest', 'West Coast', 'International']
     segments = ['Premium', 'Standard', 'Business', 'Enterprise', 'Student']
@@ -56,10 +55,22 @@ def generate_fintech_data():
 def generate_campaign_performance():
     campaigns = ['Cashback Offer', 'Points Multiplier', 'Zero APR Promo',
                  'Sign-up Bonus', 'Referral Program', 'Merchant Partnership']
+    
+    # Realistic ROAS ranges for fintech campaigns (2x to 15x)
+    roas_ranges = {
+        'Cashback Offer': (4.0, 8.0),
+        'Points Multiplier': (3.5, 7.0),
+        'Zero APR Promo': (2.0, 5.0),
+        'Sign-up Bonus': (3.0, 6.0),
+        'Referral Program': (5.0, 12.0),
+        'Merchant Partnership': (6.0, 15.0)
+    }
+    
     rows = []
     base_date = datetime(2025, 1, 1)
     
     for campaign in campaigns:
+        roas_min, roas_max = roas_ranges[campaign]
         for month in range(12):
             date = base_date + timedelta(days=month*30)
             sent = random.randint(50000, 500000)
@@ -69,8 +80,13 @@ def generate_campaign_performance():
             opens = int(sent * open_rate)
             clicks = int(sent * click_rate)
             conversions = int(sent * conversion_rate)
-            revenue = conversions * random.uniform(150, 800)
+            
+            # Realistic cost per send
             cost = sent * random.uniform(0.002, 0.008)
+            
+            # Realistic ROAS based on campaign type
+            roas = random.uniform(roas_min, roas_max)
+            revenue = cost * roas
             
             rows.append({
                 'date': date.strftime('%Y-%m-%d'),
@@ -84,7 +100,7 @@ def generate_campaign_performance():
                 'open_rate': round(open_rate * 100, 2),
                 'click_rate': round(click_rate * 100, 2),
                 'conversion_rate': round(conversion_rate * 100, 2),
-                'roas': round(revenue / cost, 2)
+                'roas': round(roas, 2)
             })
     
     return pd.DataFrame(rows)
@@ -112,19 +128,18 @@ def generate_customer_data():
     return pd.DataFrame(rows)
 
 if __name__ == '__main__':
-    print("Generating 100,000 transaction records...")
+    print("Generating realistic fintech data...")
     df1 = generate_fintech_data()
     df1.to_csv('transaction_data.csv', index=False)
     print(f"Transactions: {len(df1):,} records")
     
-    print("Generating campaign performance data...")
     df2 = generate_campaign_performance()
     df2.to_csv('campaign_data.csv', index=False)
     print(f"Campaigns: {len(df2):,} records")
     
-    print("Generating 50,000 customer records...")
     df3 = generate_customer_data()
     df3.to_csv('customer_data.csv', index=False)
     print(f"Customers: {len(df3):,} records")
     
-    print("All data generated successfully!")
+    print(f"Campaign ROAS range: {df2['roas'].min():.1f}x to {df2['roas'].max():.1f}x")
+    print("All data regenerated with realistic values!")
