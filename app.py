@@ -439,7 +439,7 @@ with tab1:
             <div class="card-head-sub">Transaction amount breakdown</div></div>
             <span class="card-tag">100K records</span>
         </div></div>""", unsafe_allow_html=True)
-        ch = txn_df.groupby('channel')['transaction_amount'].sum().reset_index().sort_values('transaction_amount', ascending=False)
+        ch = txn_df.groupby('channel')['transaction_amount'].sum().reset_index().sort_values('transaction_amount', ascending=True)
         ch['pct'] = (ch['transaction_amount'] / ch['transaction_amount'].sum() * 100).round(1)
         colors = ['#4f46e5','#6366f1','#818cf8','#a5b4fc','#c7d2fe']
         fig1 = go.Figure()
